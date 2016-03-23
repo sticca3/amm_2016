@@ -22,15 +22,15 @@ body{
     font-weight:bold;  
 }
 
-div#content > h2{
+div#content h2{
     color:#9e1616;   
 }
 h1,h2,h3,h4,h5,h6{
     color:#1c345a;
 }
 
- #footer,#header{
-    color:white;
+#footer,#header{
+   color:white;
 }
 
 a:link, a:visited{
@@ -42,7 +42,16 @@ a:hover{
     text-decoration: underline;    
 }
 
-a:link[href="studente_esami.html"]{
-    color:#1c345a;
+a[href="studente_esami.html"]:link{
+    color:#1c345a;   
     
+}
+
+#logo > h1{
+    color:#FFFFFF;
+    
+} 
+
+#footer p{
+    color:#000000;
 }
