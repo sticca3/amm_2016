@@ -7,3 +7,23 @@ and open the template in the editor.
     Created on : Mar 23, 2016, 4:28:21 PM
     Author     : studente
 */
+.content_table{
+    margin:2%;
+    width:96%
+}
+
+td{
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 1px;
+    margin:0px;
+    text-align: center;
+}
+
+th{
+    color:red;
+}
+
+.pari{
+    
+}
