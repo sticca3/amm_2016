@@ -11,6 +11,45 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Registrazione esami  </h1>
+        <!--<img src="logo.jpg" title="logo" alt="Logo di unica" height="50" width="50">-->
+        <form method="GET" action="../index.html">
+            <div>
+                <label for="NomeStudente">Nome Studente:</label>
+                <input type="text" name="NomeStudente" id="NomeStudente">
+                <label for="CognomeStudente">Cognome Studente:</label>
+                <input type="text" name="CognomeStudente" id="CognomeStudente">
+                <label for="Matricola">Matricola:</label>
+                <input type="number" name="Matricola" id="Matricola">
+            </div>
+            <div>
+                <label for="Lista">Lista Esami:</label>
+                <select size="3" name="Lista" id="Lista">
+                    <option value="PR1">Programmazione 1</option>
+                    <option value="PR2">Programmazione 2</option>
+                    <option value="AMM">Amministrazione di sistema</option>
+                    <option value="EAI">Elaborazione di immagini</option>
+                    <option value="FS">Fndamenti di Sistema</option>
+                    <option value="ARE2">Architteura degli elaboratori 2</option>
+                </select>
+
+                <label for="Voto">Voto:</label>
+                <input type="range" min="18" max="31" name="Voto" id="Voto">
+            </div>
+            <div>
+                <label for="Descrizione">Descrizione:</label>
+                <textarea name="Descrizione" id="Descrizione" 
+                          rows="20" cols="50">   
+                </textarea>
+                
+            </div>
+            <div>
+                <input type="reset"  value="Cancella">
+                <input type="submit"  value="Invia">
+                
+            </div>
+            
+            </form>
+        
     </body>
 </html>
