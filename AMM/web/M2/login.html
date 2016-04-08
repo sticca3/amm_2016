@@ -15,19 +15,28 @@ and open the template in the editor.
         <link rel="stylesheet" href="style.css" type="text/css" >
     </head>
     <body>
-        <nav>
-            <a href="cliente.html" >Area cliente</a>
-            <a href="descrizione.html">Descrizione sito</a>
-            <a href="venditore.html">Area venditore</a>
-        </nav>
-        
-        <form method="post" >
-            <label for="UserName">UserName:</label>
-            <input type="text" name="UserName" id="UserName">
-            <label for="Pwd">Password:</label>
-            <input type="password" name="Pwd" id="Pwd">
-        </form>
-        
+        <div id="container">
+            <div id="header"><h1>Autenticazione</h1></div>
+            <nav class="side">
+                <h2>Navigazione</h2>
+                <a href="cliente.html" >Area cliente</a>
+                <a href="descrizione.html">Descrizione sito</a>
+                <a href="venditore.html">Area venditore</a>
+            </nav>
+            <div id="content">
+                <form method="post" >
+                    <label for="UserName">UserName:</label>
+                    <input type="text" name="UserName" id="UserName">
+                    <label for="Pwd">Password:</label>
+                    <input type="password" name="Pwd" id="Pwd">
+                    <input type="reset" value="Cancella">
+                    <input type="submit" value="Invia">
+                </form>
+            </div>
+        <div id="footer">  
+                <a href="#header">Torna su</a>
+            </div>
+        </div>
         
     </body>
    

@@ -7,23 +7,522 @@ and open the template in the editor.
     Created on : Mar 23, 2016, 4:28:21 PM
     Author     : studente
 */
+
+body{
+    background-color:#f3f3f3;
+    font-family:"Times new Roman";
+    margin:0px;
+}
+
+#container{
+        margin:auto;
+        margin-top:10px;
+        margin-bottom:10px;
+        background-color:#E1E1E1;
+}
+
+/*Proprieta per le tabelle */
 .content_table{
-    margin:2%;
-    width:96%
+    margin:auto;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-spacing:0px;
+    font-family:'Segoe UI','Times new Roman';	
+    border-color:gray;
+    border-width:1px;
+    border-left-style:solid;
+    border-right-style:solid;  
+}
+
+tr{
+    background-color:#DCDCDC;
+}
+
+.pari{
+    background-color:#C3C3C3;
+}
+
+td,th{
+    border-bottom-style: solid;
+    border-bottom-color: #919191;
+    border-bottom-width:1px; 
 }
 
 td{
-    border-style: solid;
-    border-collapse: collapse;
-    border-width: 1px;
     margin:0px;
     text-align: center;
 }
 
 th{
-    color:red;
+   text-align:center;
+   color:white;
+   font-family:georgia;
+   margin:0px; 
+   background-color: rgb(1,86,124);    
 }
 
-.pari{
+/*proprieta per le liste e i link di navigazione*/
+.side{
+    background-color:#eCeCeC;
+    border-color:gray;
+    border-width:1px; 
+}
+
+.side a{
+     color:#1E90FF;
+}
+
+.side>ul{
+    list-style-type: none;
+    padding:0px; 
+    margin:0px;
+}
+
+.side li>a{
+    border:none;
+    padding:0px;;
+}
+
+ .side li{
+    display:inline-block;
+    border-width:1px;
+    border-color: #C3C3C3;
+    padding:10px;
+}
+
+/*proprieta per i link*/
+a{
+   color:#0F52BA;
+   text-decoration:none;
+   font-weight:bold;
+}
+
+a:hover{
+    color:#FF6347;
+}
+a:focus{
+    color:red;  
+}
+
+/*proprieta per i titoli*/
+h1,h2,h3{
+    color:#0F52BA;
+}
+
+p{
+    padding:5px;
+    font-family:georgia;
+}
+/*proprieta per il contenuto*/
+#content{
+    padding-right:10px;
+    min-height:650px;
+    margin-top:-30px;
+    margin-bottom:40px;
+    padding-top:30px;
+}
+/*proprieta per header*/
+#header{
+    margin-top:10px;
+    width:100%;
+    text-align:center;
+    display:block;
+    background-color:rgb(1,86,124);
+    padding-bottom:10px;
+    padding-top:10px;
+    display:inline-block;
+}
+
+#header h1{
+    display:inline-block;
+    font-family:georgia;
+    color:#FF6347;
+}
+
+
+/*proprieta form*/
+
+form{
+    text-align: center;
+    border-style: solid;
+    border-color:gray;
+    border-width:1px;
+    margin-top: 20px;
+    padding-top:10px;
+    padding-bottom:10px;
+    background-color:#eCeCeC;
+}
+
+input:focus{
+    border-style: solid;
+    border-color:#0F52BA;
+    border-width:1px;
     
+}
+
+input{
+    margin-bottom:20px;
+    display:inline-block;
+}
+
+input[type="reset"],input[type="submit"]{
+    width:35%;
+    background-color: rgb(1,86,124);
+    color:white;
+    border-style: none;
+}
+
+input[type="submit"]:hover,input[type="reset"]:hover{
+    color:#FF6347;
+}
+
+textarea{
+    height:150px;  
+}
+
+form label{
+    font-family:"Segoe UI";
+}
+
+/*proprieta footer*/
+#footer{
+    width:100%;
+    background-color:rgb(1,86,124);
+    margin-top:-30px;
+    border-bottom-style:solid;
+    border-bottom-width:20px;
+    border-color:#E1E1E1;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+#footer a{
+    color:#FF6347;
+    font-size:35px;
+}
+
+
+@media only screen and (min-width: 1024px){
+    th#prezzo{
+        width:150px;
+    }
+    
+    #num_pezzi{
+        width:100px;
+    }
+    
+    #copertina{
+        width:100px;
+    }
+    
+    #carrello{
+        width:200px;
+    }
+    
+    #nome{
+        width:300px;
+    }  
+
+    th{
+        font-size: 20px;
+     }
+    
+     .content_table{
+        font-size: 16px;
+    }
+     
+    #container{
+        width:1024px;
+    }
+
+    #content{
+        padding-left:180px;
+    }
+    
+    .side{
+        width:150px;
+        margin:12px;
+        margin-top:22px;
+        float:left;
+        border-style:solid;
+    }
+    
+    .side h2{
+        color:#0F52BA;
+        padding-left:10px;
+        display:block;
+        border-bottom-style: solid;
+        border-bottom-width:1px;
+        margin:5px;
+        margin-bottom:0px;
+    }
+
+    .side a{
+        display:block;
+        text-align: left;
+        font-size:16px;
+        min-height:30px;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-bottom-color: #C3C3C3;
+        padding-left:10px;
+        padding-top:10px;
+    }
+    
+    .side li{
+        border-bottom-style:solid;
+        padding-right:0px;
+    }
+
+    form{
+        width:80%;
+        margin-right:15%;
+        margin-left:5%; 
+    }
+    
+    input{
+        width:60%;
+        font-size:15px;
+    }
+    
+    input[type="reset"],input[type="submit"]{
+        font-size:18px;
+    }
+
+    textarea{
+        width:60%;
+        margin-left:30%;    
+    }
+    
+    label[for="descrizione"]{
+        float:left;  
+     }
+     
+    form label{ 
+        display:inline-block;
+        text-align:right;
+        width:30%;
+        font-size:18px;
+     }
+
+    #header h1{
+        font-size:40px;
+    }
+}
+      
+@media only screen and (min-width:480px) and (max-width:1024px){
+    th#prezzo{
+        width:10%;
+    }
+    
+    #num_pezzi{
+        width:15%;
+    }
+    
+    #copertina{
+        width:15%;
+    }
+    
+    #carrello{
+        width:20%;
+    }
+   
+    #nome{
+        width:40%;
+    }  
+    
+    th{
+        font-size:18px;        
+    }
+    
+    .content_table{
+        font-size: 15px;
+    }
+    
+    #container{
+        width:100%;
+    }
+
+    #content{
+        padding-left:10px;
+    }
+    
+   .side{
+        width:100%;
+        border-style:none;
+        border-bottom-style:solid;
+        margin-bottom:10px;
+    }
+    
+    .side h2{
+       display:none;
+    }
+
+    .side a{
+        display:inline-block;
+        font-size:16px;
+        min-height:30px;
+        border-style:none;
+        padding:10px;
+        padding-bottom:0px;
+        text-align:center;
+    }
+    
+     .side>ul{
+        display:inline;
+        min-height:30px;
+    }
+      
+    .side li{
+        border-style:none;
+        padding-bottom:0px
+    }
+    
+    form{
+        width:100%;
+    }
+    
+    input{
+        width:60%;
+        font-size:15px;
+    }
+   
+    input[type="reset"],input[type="submit"]{
+        font-size:17px;
+    }
+    
+    textarea{
+        width:60%;
+        margin-left:30%;    
+    }
+    
+    form label{ 
+        display:inline-block;
+        text-align:right;
+        width:30%;
+        font-size:18px;
+     }
+     
+    label[for="descrizione"]{
+        float:left;  
+    }
+    
+     #header h1{
+        font-size:37px;
+    }
+}
+
+@media only screen and (max-width:480px){
+    th#prezzo{
+        display:none;
+    }
+    
+    .col_prezzi{
+        display:none;
+    }
+    
+    .col_pezzi{
+        display:none;
+    }
+    
+    #num_pezzi{
+        display:none;
+    }
+    
+    #copertina{
+        width:15%;
+    }
+    
+    #carrello{
+        width:20%;
+    }
+    
+    #nome{
+        width:40%;
+    }  
+    
+    th{
+        font-size:17px;        
+    }
+    
+    .content_table{
+        font-size: 14px;
+    }
+    
+    #container{
+        width:100%;
+    }
+
+    .content{
+        padding-left:10px;
+    }
+    
+    .side{
+        width:100%;
+        border-bottom-style:solid;
+    }
+    
+    .side a{
+        display:inline-block;
+        font-size:15px;
+        border-right-style: solid;
+        border-right-width:1px;
+        border-right-color: #C3C3C3;
+        text-align:center;
+        padding-left:10px;
+        padding-right: 10px;
+    }
+    
+    .side h2{
+        display:none;
+    }
+    
+    .side>ul{
+        display:inline;
+    }
+    
+    .side li>a{ 
+        border-right-style: solid;
+        border-right-width:1px;
+        border-right-color: #C3C3C3;
+        text-align:center;
+        padding-right: 10px;
+    }
+  
+    .side li{
+        padding-top:0px;
+        padding-bottom:0px;
+        margin:0px;
+    }
+    
+    form{
+        width:100%;
+    }
+    
+    form label{
+        display:block;
+        width:98%;
+        padding-left:2%;
+        padding-right:2%;
+        text-align:left;
+        font-size:15px;
+    }
+   
+    input{
+        width:98%;
+        font-size:14px;
+    }
+    
+    input[type="submit"],input[type="reset"]{
+        font-size:15px;
+    }
+    
+    textarea{
+        width:98%;
+        margin-left:0px;    
+    }   
+    
+     #header h1{
+        font-size:33px;
+    }
 }
