@@ -3,11 +3,15 @@
     Created on : 17-apr-2016, 10.15.38
     Author     : Salvatore
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
+<c:if test="${titolo==null}">
+    <c:set var="titolo" value="Home"/>
+</c:if>
+
 <head>
-    <title>${prova}</title>
+    <title>${titolo}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="AMM, HTML">

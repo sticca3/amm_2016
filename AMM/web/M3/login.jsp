@@ -15,7 +15,7 @@
         <nav class="side">
             <h2>Navigazione</h2>
             <a href="cliente.html" >Area cliente</a>
-            <a href="descrizione.html">Descrizione sito</a>
+            <a href="descrizione.jsp">Descrizione sito</a>
             <a href="venditore.html">Area venditore</a>
         </nav>
         <div id="content">
@@ -32,9 +32,7 @@
                 <input type="submit" name="submit" value="Invia">
             </form>
         </div>
-        <div id="footer">  
-            <a href="#header">Torna su</a>
-        </div>
+        <jsp:include page="footer.jsp"/>
     </div>  
 </body>
 </html>

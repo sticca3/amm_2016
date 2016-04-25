@@ -41,9 +41,7 @@
                 Potra inoltre aliminare gli articoli che non vuole piu vendere.</p>
             </section>        
         </article>
-        <div id="footer"> 
-            <a href="#header">Torna su</a>
-        </div>
+        <jsp:include page="footer.jsp"/>
     </div> 
 </body>
 </html>

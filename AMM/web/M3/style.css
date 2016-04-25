@@ -61,6 +61,30 @@ th{
    background-color: rgb(1,86,124);    
 }
 
+
+
+/*proprieta per i dettagli degli articoli*/
+.dettagli li > h4{
+    display:inline-block;
+    color:#0F52BA;
+    margin:10px;
+}
+
+.dettagli{
+    list-style-type: none;
+    padding:0px;
+    display:block; 
+}
+
+.dettagli li{
+    font-family: 'Segoe UI','Times new Roman';
+    margin:10px;
+    margin-right:15px;
+    margin-left:15px;
+    text-align: left; 
+}
+
+
 /*proprieta per le liste e i link di navigazione*/
 .side{
     background-color:#eCeCeC;
@@ -165,14 +189,14 @@ input{
     display:inline-block;
 }
 
-input[type="reset"],input[type="submit"]{
+input[type="reset"],input[type="submit"],button{
     width:35%;
     background-color: rgb(1,86,124);
     color:white;
     border-style: none;
 }
 
-input[type="submit"]:hover,input[type="reset"]:hover{
+input[type="submit"]:hover,input[type="reset"]:hover,button:hover{
     color:#FF6347;
 }
 
@@ -285,7 +309,7 @@ form label{
         font-size:15px;
     }
     
-    input[type="reset"],input[type="submit"]{
+    input[type="reset"],input[type="submit"],button{
         font-size:18px;
     }
 
@@ -307,6 +331,10 @@ form label{
 
     #header h1{
         font-size:40px;
+    }
+    
+     .dettagli li{
+        display:inline-block;
     }
 }
       
@@ -387,7 +415,7 @@ form label{
         font-size:15px;
     }
    
-    input[type="reset"],input[type="submit"]{
+    input[type="reset"],input[type="submit"],button{
         font-size:17px;
     }
     
@@ -409,6 +437,10 @@ form label{
     
      #header h1{
         font-size:37px;
+    }
+    
+     .dettagli li{
+        display:inline-block;
     }
 }
 
@@ -513,7 +545,7 @@ form label{
         font-size:14px;
     }
     
-    input[type="submit"],input[type="reset"]{
+    input[type="submit"],input[type="reset"],button{
         font-size:15px;
     }
     
@@ -525,4 +557,12 @@ form label{
      #header h1{
         font-size:33px;
     }
+    
+    button{
+        width:80%;
+    }
+    .dettagli li{
+        display:block;
+    }
+
 }
