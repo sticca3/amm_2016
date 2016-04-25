@@ -6,7 +6,7 @@
 package amm.m3.classes;
 
 /**
- *
+ *Classe usata per rappresentare gli articoli all'interno dell'applicazione
  * @author Salvatore
  */
 public class Articolo {
@@ -17,24 +17,24 @@ public class Articolo {
     private String image_path;
     private String venditore;
     private String descrizione;
+    private int id;
     
-    public Articolo(String titolo,String descrizione,int numero,double prezzo,String path,String venditore)throws Exception{
+    public Articolo(String titolo,String descrizione,int numero,double prezzo,String path,String venditore,int id)throws Exception{
         
-         if(prezzo<=0||numero<0||titolo==null||path==null||venditore==null)
+        if(prezzo<=0||numero<0||titolo==null||path==null||venditore==null||FactoryArticoli.getInstance().getArticleById(id)!=null)
             throw new Exception("Errore nei dati inseriti.");
         
         this.titolo=titolo;
         this.prezzo=prezzo;
         this.numero=numero;
         this.image_path=path;
+        this.id = id;
         
         if(descrizione==null||descrizione.equals("")){
             this.descrizione="Nessuna descrizione";
         }else
             this.descrizione=descrizione;
-        
-        
-        //controllo specifico per il venditore...
+         
         this.venditore=venditore;
     }
 
@@ -94,7 +94,32 @@ public class Articolo {
         if(descrizione==null||descrizione.equals("")){
             this.descrizione="Nessuna descrizione";
         }else
-            this.descrizione=descrizione;
+             this.descrizione=descrizione;      
     }
+     
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Controlla se l'oggeto passato come parametro rappresenta lo stesso articolo rappresentato da questo oggetto.
+     * Due articoli sono considerati uguali se hanno uguale: Titolo,descrizione,prezzo e se sono stati messi in vendita dallo stesso utente
+     * @param object
+     * @return true se i due oggetti rappresentano lo stesso articolo, false altrimeti
+     */
+    
+    @Override 
+    public boolean equals(Object object){
+        if(object==null||this.getClass()!=object.getClass()){
+            return false;
+        }
+        Articolo articolo=(Articolo)object;
+        if(articolo.getTitolo().equals(titolo)&&articolo.getVenditore().equals(venditore)&&articolo.getPrezzo()==prezzo&&articolo.getDescrizione().equals(descrizione))
+        {
+            return true;
+        }
+        return false;
+    }
+    
 
 }
