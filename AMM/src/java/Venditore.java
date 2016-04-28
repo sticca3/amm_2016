@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import amm.m3.classes.FactoryArticoli;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import amm.m3.classes.FactoryUtenti;
+import amm.m3.classes.Utente;
+import amm.m3.classes.UtenteVenditore;
 /**
  *
  * @author Salvatore
@@ -32,15 +35,80 @@ public class Venditore extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session =request.getSession();
+        
+        HttpSession session =request.getSession(false);
+        UtenteVenditore venditore=checkUser(session);
+       
+        /*
+            controlla se l'utente ha accesso a questa pagina e in caso contario visualizza un errore.
+        */
+        if(venditore!=null){
+            /*Controlla se sono stati inseriti i dati necessari all'inserimento di un articolo,in caso contrario visualizza il form di inserimento*/
+            if(request.getParameter("submit")!=null){    
+                String titolo=request.getParameter("nomeArticolo");
+                String path=request.getParameter("url");
+                String descrizione=request.getParameter("descrizione");
+                int id;
+                try{
+                    double prezzo=Double.parseDouble(request.getParameter("prezzo"));
+                    int numero=Integer.parseInt(request.getParameter("quantita"));
+                    id=venditore.addArticolo(titolo, descrizione, numero, prezzo, path);
+                }catch(NumberFormatException e){
+                    id=-1;
+                }
+                
+                /*
+                    se i dati inseriti sono corretti visualizza idettagli dell'articolo inserito.
+                    altrimeti visualizza un messaggio di errore
+                */
+                if(id>=0){
+                    request.setAttribute("articolo",FactoryArticoli.getInstance().getArticleById(id));
+                    request.setAttribute("page","aggiunta");
+                }else
+                {
+                    if(id==-1){
+                        request.setAttribute("message", "Errore nell'inserimento dell'oggetto");
+                    }else{
+                        request.setAttribute("message", "L'articolo è gia presente nella lista");
+                    }
+                    request.setAttribute("page", "errore");
+                } 
+            }
+        }else{
+            request.setAttribute("page", "accesso_negato");
+        }
+        
+        request.setAttribute("titolo","Area venditore");
+        request.getRequestDispatcher("venditore.jsp").forward(request, response);      
+    }
+    
+    /**
+     * Controlla la variabile di sessione per cercare i dati dell'utente.
+     * 
+     * @param session variabile di sessione
+     * @return UtenteVenditore venditore se l'utente ha eseguito il login ed è un venditore, 
+     * null se la sessione non è stata creata o l'utente non è un venditore
+     */
+    
+    private UtenteVenditore checkUser(HttpSession session){
+        
         if(session!=null)
         {
-            request.getRequestDispatcher("venditore.jsp");
-        }else
-        {
-            request.getRequestDispatcher("errore.jsp");
+            String userName=(String)session.getAttribute("utente");
+            if(userName!=null){
+                try{
+                    Utente utente=FactoryUtenti.getInstance().getUtenteByUserName(userName);
+                    if(utente!=null && utente instanceof UtenteVenditore)
+                       return (UtenteVenditore)utente;   
+                }catch(Exception e){
+                     return null;
+                } 
+            }
         }
+        return null;
     }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

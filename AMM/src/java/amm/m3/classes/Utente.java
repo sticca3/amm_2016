@@ -28,13 +28,6 @@ public class Utente {
         return userName;
     }
 
-    public void setUserName(String userName)throws Exception {
-        if(userName!=null)
-            this.userName = userName;
-        else
-            throw new Exception("Errore");
-    }
-
     public String getPassword() {
         return password;
     }

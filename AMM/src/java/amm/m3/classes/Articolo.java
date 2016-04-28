@@ -21,13 +21,19 @@ public class Articolo {
     
     public Articolo(String titolo,String descrizione,int numero,double prezzo,String path,String venditore,int id)throws Exception{
         
-        if(prezzo<=0||numero<0||titolo==null||path==null||venditore==null||FactoryArticoli.getInstance().getArticleById(id)!=null)
+        if(prezzo<=0||numero<0||titolo==null||titolo.equals("")||path==null||venditore==null||FactoryArticoli.getInstance().getArticleById(id)!=null)
             throw new Exception("Errore nei dati inseriti.");
+        
         
         this.titolo=titolo;
         this.prezzo=prezzo;
         this.numero=numero;
-        this.image_path=path;
+        
+        if(path.equals(""))
+            this.image_path="images/no_image.jpg";
+        else
+            this.image_path=path;
+        
         this.id = id;
         
         if(descrizione==null||descrizione.equals("")){

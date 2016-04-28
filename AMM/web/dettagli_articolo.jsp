@@ -3,8 +3,6 @@
     Created on : 24-apr-2016, 12.31.56
     Author     : Salvatore
 --%>
-
-
     
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 

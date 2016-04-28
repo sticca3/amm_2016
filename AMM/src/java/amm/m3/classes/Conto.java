@@ -25,17 +25,33 @@ public class Conto {
     }
     
     public double getSaldo(){
-        return saldo;
+        return ((double)Math.round(saldo*100))/100.0;//restituisce il saldo approssimato a 2 decimali
     }
     
-    
+    /**
+     * Incrementa il credito dell'importo specificato.Se il credito finale risultsse negativo,
+     * l'operazione non viene eseguita
+     * @param importo importo da sommare al credito
+     * @return true se la transazione è stata effettuta, false altrimenti
+     */
     public boolean addMoney(double importo){
+        if(controllaOperazione(importo)){
+            saldo+=importo;
+            return true;
+        } 
+        return false;
+    }
+    
+    /**
+     * Controlla se il credito puo essere incrementato dell'importo specificato
+     * @param importo importo da sommare al credito
+     * @return true se la transazione puo essere effetuata, false altrimenti
+     */
+    public boolean controllaOperazione(double importo){
         if(this.saldo+importo<0){
             return false;
         }
-        
         return true;
     }
-    
     
 }

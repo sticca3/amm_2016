@@ -5,10 +5,11 @@
  */
 
 import amm.m3.classes.Articolo;
-import amm.m3.classes.Cliente;
+import amm.m3.classes.UtenteCliente;
+import amm.m3.classes.FactoryArticoli;
 import amm.m3.classes.FactoryUtenti;
 import amm.m3.classes.Utente;
-import amm.m3.classes.Venditore;
+import amm.m3.classes.UtenteVenditore;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,46 +43,61 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             
-            HttpSession session=request.getSession();
+            HttpSession session=request.getSession(false);
+            request.setAttribute("titolo","Login");
             
-            if(session==null){
+            /*Se l'utente e gia autenticato visualiza la pagina associata al tipo di utente, altrimenti visualiza il form per l'autenticazione*/
+            if(session==null||session.getAttribute("utente")==null){
                 String username=(String)request.getParameter("userName");
                 String password=(String)request.getParameter("pwd");
                 
-                //Controlla se  parametri sono stati inviati
+                //Controlla se i parametri sono stati inviati
                 if(request.getParameter("submit")!=null && username!=null && password!=null )
                 { 
                     Utente utente=null;
                     try {
                         //cerca le credenziali inserite nella lista degli utenti
-                        utente=FactoryUtenti.getInstance().autenticazione(username, password);                        
+                        utente=FactoryUtenti.getInstance().autenticazione(username, password);  
                     } catch (Exception ex) {
                         Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if(utente!=null){
                         //se l'utente esiste, inizializza la sessione e richiama la pagina corrispondente al tipo di utente
                         session=request.getSession(true);
-                        session.setAttribute("utente", utente);
+                        session.setAttribute("utente", utente.getUserName());
                         redirect(request,response,utente);
                     }else{
                         //se l'utente non esiste ritona al form di login
                         request.setAttribute("errore","Autenticazione fallita.");
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                     }  
-                }else{
+                }else
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                
+            }else{
+                try{
+                    Utente utente=(Utente)FactoryUtenti.getInstance().getUtenteByUserName((String)session.getAttribute("utente"));
+                    redirect(request,response,utente);
+                }catch(Exception e){
+                    session.invalidate();
+                    request.setAttribute("errore","Autenticazione fallita");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
-            }else{
-                Utente utente=(Utente)session.getAttribute("utente");
-                redirect(request,response,utente);
-            }  
+            }      
     }
-
-    private void redirect(HttpServletRequest request,HttpServletResponse response,Utente utente) throws ServletException, IOException{
-        if(utente instanceof Cliente)
-            request.getRequestDispatcher("cliente.jsp").forward(request, response);
-        else
+    
+    private void redirect(HttpServletRequest request,HttpServletResponse response,Utente utente) throws ServletException, IOException{    
+        if(utente instanceof UtenteCliente){
+            request.setAttribute("articoli", FactoryArticoli.getInstance().getArticlesList());
+            request.setAttribute("titolo","Area cliente");
+            request.getRequestDispatcher("cliente.jsp").forward(request, response); 
+           }
+        if(utente instanceof UtenteVenditore){
+            request.setAttribute("titolo","Area venditore");
             request.getRequestDispatcher("venditore.jsp").forward(request, response);  
+        }
+        
+        
     
     }
     
