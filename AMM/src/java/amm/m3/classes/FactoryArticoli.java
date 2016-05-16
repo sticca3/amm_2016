@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class FactoryArticoli {
     
+    private String connectionString;
     private static FactoryArticoli factory;
     private ArrayList<Articolo> listaArticoli;
     private int counter;
@@ -114,4 +115,10 @@ public class FactoryArticoli {
         return listaArticoli;
     }
     
+    public void setConnectionString(String s){
+	this.connectionString = s;
+    }
+    public String getConnectionString(){
+            return this.connectionString;
+    } 
 }

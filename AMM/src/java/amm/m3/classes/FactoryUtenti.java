@@ -5,14 +5,20 @@
  */
 package amm.m3.classes;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
 /**
  *
  * @author Salvatore
  */
 public class FactoryUtenti {
     
+    
+    private String connectionString;
     private static FactoryUtenti factory;
     private ArrayList<Utente> listaUtenti;
     public static final int TYPE_CLIENTE=0;
@@ -27,9 +33,9 @@ public class FactoryUtenti {
     
     private FactoryUtenti()throws Exception{
         System.out.println("Init user list");
-        initList();
+       // initList();
     }
-    
+    /*
     private void initList() throws Exception{
         listaUtenti=new ArrayList<Utente>();
         FactoryArticoli articoli=FactoryArticoli.getInstance();
@@ -61,7 +67,7 @@ public class FactoryUtenti {
             System.out.println("articolo "+a);
         }
     }
-
+*/
     
     /**
      * Crea un nuovo utente con le informazioni ricevute come parametro.
@@ -98,12 +104,44 @@ public class FactoryUtenti {
      * @return Utente utente se l'autenticaione va a buon fine, null altrimenti
      */
     public Utente autenticazione(String Username,String password){
-        for(Utente u: listaUtenti){
+        Utente u=null;
+        System.out.println("autenticazione");
+        try {
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            Statement statement=conn.createStatement();
+            String sql="select * from Utenti where username="+Username+" and password="+password;
+            ResultSet result=statement.executeQuery(sql);
+            
+            if(result.next()){
+                
+                System.out.println(result.getString("username")+result.getString("password"));
+                if(result.next()){
+                    System.out.println("Errore");
+                    System.out.println(result.getString("username")+result.getString("password"));
+                    return null;
+                }
+                u=new Utente(result.getString("username"),result.getString("password"),new Conto(result.getDouble("saldo")));
+            }
+           
+            conn.close();
+             return u;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }catch(Exception e){
+            return null;
+        }
+        
+        
+        
+       /* for(Utente u: listaUtenti){
             if(u.getUserName().equals(Username)&&u.getPassword().equals(password)){
                 return u;
             }
         }
         return null;
+    */    
     }
     
     public ArrayList<Utente> getListaUtenti(){
@@ -137,4 +175,15 @@ public class FactoryUtenti {
         }
         return null;
     }
+
+    public void setConnectionString(String s){
+	this.connectionString = s;
+    }
+    public String getConnectionString(){
+            return this.connectionString;
+    } 
+    
+
+
+
 }

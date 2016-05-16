@@ -1,0 +1,19 @@
+Articoli:
+	-id_articolo 	Integer
+	-titolo 	String
+	-numero 	Integer
+	-prezzo 	Double
+	-image_path 	String
+	-descrizione 	String
+	-venditore 	String
+
+Utenti:
+	-Username 	String
+	-password 	String
+	-tipo 		Char ( C->cliente, V->venditore )
+	-saldo 		Double
+
+
+Relazioni:
+	Articolo - Venditore relazione Molti a Uno:
+			un venditore puo avere piu articoli, un articolo appartiene a un solo venditore
