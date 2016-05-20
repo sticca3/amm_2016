@@ -13,7 +13,7 @@ public class UtenteVenditore extends Utente {
     
     private double feedback;
     
-    public UtenteVenditore(String userName, String password, Conto saldo,double feedback) throws Exception {
+    public UtenteVenditore(String userName, String password, double saldo,double feedback) throws IllegalArgumentException {
         super(userName, password, saldo);
         
         if(feedback>=0&&feedback<=100)
@@ -27,42 +27,22 @@ public class UtenteVenditore extends Utente {
     }
     
     public void setFeedback(double feedback){
-        if(feedback>=0&&feedback<=100)
+        double old=this.feedback;
+        if(feedback>=0&&feedback<=100){
             this.feedback=feedback;
+            if(!FactoryUtenti.getInstance().updateUtente(this))
+                this.feedback=old;     
+        }
     }
     
-    /**Cerca l'articolo con l'id passato come parametro nella lista degli articoli, e
-     * incrementa il saldo del venditore nel caso in cui la vendita vada a buon fine.
-     * Se il numero di copie dell'articolo venduto raggiunge lo 0, viene rimosso dalla lista.
-     * 
-     * @param id id dell'articolo da vendere
-     * @return true se l'articolo e stato venduto, false se l'articolo non viene trovato o si verifica qualche errore
-     */
-    public boolean vendiArticolo(int id){
-        FactoryArticoli factory=FactoryArticoli.getInstance();
-        Articolo articolo=factory.getArticleById(id);
-        
-        if(articolo!=null){
-            try{
-                if(articolo.getNumero()<2){
-                    rimuoviArticolo(id);
-                }else
-                    articolo.setNumero(articolo.getNumero()-1);
-            }catch(Exception e){
-                return false;
-            }
-            saldo.addMoney(articolo.getPrezzo());
-            return true;
-        }
-        return false;
-    }
+   
     
     /**
      * Rimuove dalla lista degli articoli quello con l'id ricevuto come parametro
      * @param id id dell'articolo da rimuovere
      */
-    public void rimuoviArticolo(int id){
-        FactoryArticoli.getInstance().removeArticle(id);
+    public boolean rimuoviArticolo(int id){
+        return FactoryArticoli.getInstance().removeArticle(id);
     }
     
     /**
@@ -74,9 +54,12 @@ public class UtenteVenditore extends Utente {
      * @param path path dell'immagine della locandina
      * @return id dell'articolo inserito
      */
-    public int addArticolo(String titolo,String descrizione,int numero,double prezzo,String path){
-        return FactoryArticoli.getInstance().addArticle(titolo, descrizione, numero, prezzo, path, getUserName());  
+    public Articolo addArticolo(String titolo,String descrizione,int numero,double prezzo,String path) throws ArticoloEsistenteException{
+        return FactoryArticoli.getInstance().addArticle(titolo, descrizione, numero, prezzo, path, getUserName());     
     }
     
+    public Articolo updateArticolo(String titolo,String descrizione,int numero,double prezzo,String path,int id){
+        return FactoryArticoli.getInstance().updateArticle(titolo, descrizione, numero, prezzo, path, getUserName(),id);     
+    }
     
 }

@@ -72,7 +72,7 @@ public class Cliente extends HttpServlet {
                         }else{
                             if(buy.equals("done")){
                                 request.setAttribute("page", "errore"); 
-                                request.setAttribute("message","Articolo acquistato.Credito residuo: "+cliente.saldo.getSaldo()+"€");
+                                request.setAttribute("message","Articolo acquistato.Credito residuo: "+cliente.getSaldo()+"€");
                             }else{
                                 request.setAttribute("page", "errore"); 
                                 request.setAttribute("message","Errore.Impossibile procedere all'aquisto");
@@ -80,7 +80,7 @@ public class Cliente extends HttpServlet {
                        }
                     }else{
                         /*
-                            Se il paretro acquista non viene specificato, controlla l'id specificato.
+                            Se il parametro acquista non viene specificato, controlla l'id specificato.
                             se l'id appartiene a un articolo esistente, visualizza i dettagli dell'articolo.
                             altrimenti visualizza un messaggio di errore.
                         */

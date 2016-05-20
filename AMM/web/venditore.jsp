@@ -16,24 +16,29 @@
             <h2>Navigazione</h2>
            <a href="login.html" >Login</a>
            <a href="descrizione.jsp">Descrizione sito</a>
+           <a href="venditore.html">Lista articoli</a>
+           <a href="venditore.html?operation=insert">Inserimento articolo</a>
        </nav>
        <div id="content">
            <!--Sceglie il contenuto da mostrare in base al parametro passato dalla servlet-->
            <c:choose >
                <c:when test="${page=='aggiunta'}">
-                   <h3>L'articolo e stato inserito corretamente.</h3>
+                   <h3>L'operazione e stata eseguita corretamente.</h3>
                    <jsp:include page="dettagli_articolo.jsp"/>
-                   <a href="venditore.html">Torna al form di inserimento</a>
+                   <a href="venditore.html">Torna alla lista degli oggetti</a>
                </c:when>
                <c:when test="${page=='accesso_negato'}">
                    <jsp:include page="accesso_negato.jsp"/>
                </c:when>
                <c:when test="${page=='errore'}">
                    <h3>${message}</h3>
-                   <a href="venditore.html">Torna al form di inserimento</a>
+                   <a href="venditore.html">Torna alla lista degli oggetti</a>
+               </c:when>
+               <c:when test="${page=='form'}">
+                   <jsp:include page="form_venditore.jsp"/> 
                </c:when>
                <c:when test="${page==null}">
-                   <jsp:include page="form_venditore.jsp"/> 
+                   <jsp:include page="tabella.jsp"/> 
                </c:when>
            </c:choose>
        </div>

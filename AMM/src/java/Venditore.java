@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+import amm.m3.classes.Articolo;
+import amm.m3.classes.ArticoloEsistenteException;
 import amm.m3.classes.FactoryArticoli;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,32 +50,84 @@ public class Venditore extends HttpServlet {
                 String titolo=request.getParameter("nomeArticolo");
                 String path=request.getParameter("url");
                 String descrizione=request.getParameter("descrizione");
-                int id;
+                
+                Articolo articolo=null;
+                int flag=0;
                 try{
                     double prezzo=Double.parseDouble(request.getParameter("prezzo"));
                     int numero=Integer.parseInt(request.getParameter("quantita"));
-                    id=venditore.addArticolo(titolo, descrizione, numero, prezzo, path);
+                    //controlla se l'operazione da effettuare e una insert o una update
+                    if(request.getParameter("update")!=null){
+                        int id=Integer.parseInt(request.getParameter("update"));
+                        articolo=venditore.updateArticolo(titolo,descrizione,numero,prezzo,path,id);
+                    }else{
+                        articolo=venditore.addArticolo(titolo, descrizione, numero, prezzo, path);
+                    } 
                 }catch(NumberFormatException e){
-                    id=-1;
+                    flag=0;
+                }catch(ArticoloEsistenteException ae){
+                    flag=-1;
                 }
                 
                 /*
-                    se i dati inseriti sono corretti visualizza idettagli dell'articolo inserito.
+                    se l'operazione e eseguita correttamente visualizza i dettagli dell'articolo inserito.
                     altrimeti visualizza un messaggio di errore
                 */
-                if(id>=0){
-                    request.setAttribute("articolo",FactoryArticoli.getInstance().getArticleById(id));
+                if(articolo!=null){
+                    request.setAttribute("articolo",articolo);
                     request.setAttribute("page","aggiunta");
                 }else
                 {
-                    if(id==-1){
+                    if(flag==0){
                         request.setAttribute("message", "Errore nell'inserimento dell'oggetto");
                     }else{
                         request.setAttribute("message", "L'articolo è gia presente nella lista");
                     }
                     request.setAttribute("page", "errore");
                 } 
+            }else{
+                //controlla il tipo di operaione richiesta e visualizza la pagina corrispondente
+                try{   
+                    switch(request.getParameter("operation")){
+                    case "update": 
+                        try{
+                            int id=Integer.parseInt(request.getParameter("id"));
+                            request.setAttribute("page","form");
+                            request.setAttribute("articolo",FactoryArticoli.getInstance().getArticleById(id));
+                        }catch(NumberFormatException e){
+                            request.setAttribute("page", "errore");
+                            request.setAttribute("message","Errore nel caricamento della pagina");
+                        } 
+                        break;
+                    case "delete":
+                         try{
+                            int id=Integer.parseInt(request.getParameter("id"));
+                            if(venditore.rimuoviArticolo(id)){
+                                request.setAttribute("venditore","true");
+                                request.setAttribute("articoli",FactoryArticoli.getInstance().getArticlesByVenditore(venditore.getUserName()));
+                            }else{
+                                request.setAttribute("message", "Errore l'oggetto non e stato eliminato");
+                                request.setAttribute("page", "errore");
+                            }
+                         }catch(NumberFormatException e){
+                            request.setAttribute("page", "errore");
+                            request.setAttribute("message","Si e verificato un errore.");
+                        } 
+                        break;
+                    case "insert":
+                        request.setAttribute("page","form");
+                        break;
+                    default:
+                        request.setAttribute("venditore","true");
+                        request.setAttribute("articoli",FactoryArticoli.getInstance().getArticlesByVenditore(venditore.getUserName()));
+                        break;
+                    }
+                }catch(NullPointerException e){
+                    request.setAttribute("venditore","true");
+                    request.setAttribute("articoli",FactoryArticoli.getInstance().getArticlesByVenditore(venditore.getUserName()));
+                }
             }
+            
         }else{
             request.setAttribute("page", "accesso_negato");
         }

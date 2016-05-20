@@ -7,10 +7,13 @@ package amm.m3.classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Salvatore
@@ -20,54 +23,55 @@ public class FactoryUtenti {
     
     private String connectionString;
     private static FactoryUtenti factory;
-    private ArrayList<Utente> listaUtenti;
     public static final int TYPE_CLIENTE=0;
     public static final int TYPE_VENDITORE=1;
     
-    public static FactoryUtenti getInstance()throws Exception{
+    public static FactoryUtenti getInstance(){
         if(factory==null){
             factory=new FactoryUtenti();
         }
         return factory;
     }
     
-    private FactoryUtenti()throws Exception{
-        System.out.println("Init user list");
-       // initList();
+    private FactoryUtenti(){
     }
-    /*
-    private void initList() throws Exception{
-        listaUtenti=new ArrayList<Utente>();
-        FactoryArticoli articoli=FactoryArticoli.getInstance();
-        
-        UtenteCliente cliente=new UtenteCliente("giovanni_verdi","2",new Conto(125));
-        listaUtenti.add(cliente);
-        
-        UtenteVenditore venditore=new UtenteVenditore("mario_rossi","0",new Conto(50),0);
-        articoli.addArticle("Inside out","Animazione",15,19.9,"images/inside_out.jpg",venditore.getUserName());
-        articoli.addArticle("Maze runner","Azione",2,21,"images/maze_runner.jpg",venditore.getUserName());
-        articoli.addArticle("Tales of Halloween","Horror",12,15.9,"images/hallowen.jpg",venditore.getUserName());
-        listaUtenti.add(venditore);
-        
-        venditore=new UtenteVenditore("francesco_neri","1",new Conto(125.60),40);
-        articoli.addArticle("Crimson pick","Thriller",1,19.9,"images/crimson_pick.jpg",venditore.getUserName());
-        articoli.addArticle("Snoopy and friends","Animazione",15,12,"images/snoopy.jpg",venditore.getUserName());
-        listaUtenti.add(venditore);
-        
-        venditore=new UtenteVenditore("giovanni84","4",new Conto(0),12);
-        articoli.addArticle("Snoopy and friends","Animazione",5,17.5,"images/snoopy.jpg",venditore.getUserName());
-        articoli.addArticle("Maze runner","Azione",21,18.99,"images/maze_runner.jpg",venditore.getUserName());
-        listaUtenti.add(venditore);
-        
-        cliente=new UtenteCliente("mario04","3",new Conto(162));
-        listaUtenti.add(cliente);
-        
-        
-        for(Articolo a:articoli.getArticlesList()){
-            System.out.println("articolo "+a);
+    
+    /**
+     * permette di modificare le informazioni relative a un utente.
+     * 
+     * @param utente l'utente da modificare
+     * @return  true se l'operaione va a buon fine false altrimenti
+     */
+    public boolean updateUtente(Utente utente){
+        try {
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            
+            conn.setAutoCommit(false);
+            String sql="update Utenti set saldo=?, password=?, tipo=?,feedback=?  where username=?";
+            PreparedStatement statement=conn.prepareStatement(sql);
+            statement.setDouble(1,utente.getSaldo());
+            statement.setString(2,utente.getPassword());
+                                    
+            if(utente instanceof UtenteCliente){
+                statement.setString(3,"C");
+                statement.setNull(4,java.sql.Types.INTEGER);
+            
+            }else{
+                statement.setString(3,"V");
+                statement.setDouble(4,((UtenteVenditore)utente).getFeedback());
+            }
+            
+            statement.setString(5,utente.getUserName());
+            int updateUtente=statement.executeUpdate();
+            if(updateUtente!=1)
+                return false;
+            
+            return true;
+        } catch (SQLException ex) {
+            return false;
         }
     }
-*/
+    
     
     /**
      * Crea un nuovo utente con le informazioni ricevute come parametro.
@@ -78,19 +82,32 @@ public class FactoryUtenti {
      * @param type  Tipo di utente(Cliente o Venditore)
      * @return true se il nuovo utente viene creato, false altrimenti
      */
-    public boolean  addUtente(String userName,String password,int type){
-        if(getUtenteByUserName(userName)!=null||(type!=TYPE_CLIENTE&&type!=TYPE_VENDITORE)){
-            return false;
-        }
-        
+    public boolean  addUtente(String Username,String password,int type){
         try{
-            Utente utente=null;
-            if(type==TYPE_CLIENTE)
-                utente=new UtenteCliente(userName,password,new Conto(0));
-            else
-                utente=new UtenteVenditore(userName,password,new Conto(0),0);
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            String sql;
+            sql="insert into Utenti(username,password,saldo,tipo,feedback) values(?,?,?,?,?);";
+            PreparedStatement statement=conn.prepareStatement(sql);
             
-            listaUtenti.add(utente);      
+            statement.setString(1, Username);
+            statement.setString(2, password);
+            statement.setDouble(3, 0);
+            
+            statement.setInt(1,0);
+            if(type==TYPE_CLIENTE){
+                statement.setString(4, "C");
+                statement.setNull(5, java.sql.Types.INTEGER);
+            }
+            else{
+                statement.setString(4, "V");
+                statement.setInt(5,0);
+            }
+              
+            int affected_row=statement.executeUpdate(sql);
+            
+            if(affected_row!=1)
+                return false;  
+            
         }catch (Exception e){
             return false;
         }
@@ -103,87 +120,226 @@ public class FactoryUtenti {
      * @param password  Password dell'utente 
      * @return Utente utente se l'autenticaione va a buon fine, null altrimenti
      */
+    
     public Utente autenticazione(String Username,String password){
         Utente u=null;
-        System.out.println("autenticazione");
         try {
             Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
-            Statement statement=conn.createStatement();
-            String sql="select * from Utenti where username="+Username+" and password="+password;
-            ResultSet result=statement.executeQuery(sql);
             
+            String sql="select * from Utenti where username=? and password=?";
+            
+            PreparedStatement statement=conn.prepareStatement(sql);
+            statement.setString(1, Username);
+            statement.setString(2, password);
+
+            ResultSet result=statement.executeQuery();
+           
             if(result.next()){
-                
-                System.out.println(result.getString("username")+result.getString("password"));
+                if(result.getString("tipo").equals("C")){
+                    u=new UtenteCliente(result.getString("username"),result.getString("password"),result.getDouble("saldo"));
+                }else{
+                    u=new UtenteVenditore(result.getString("username"),result.getString("password"),result.getDouble("saldo"),result.getInt("feedback"));
+                }     
                 if(result.next()){
-                    System.out.println("Errore");
-                    System.out.println(result.getString("username")+result.getString("password"));
                     return null;
                 }
-                u=new Utente(result.getString("username"),result.getString("password"),new Conto(result.getDouble("saldo")));
             }
-           
+            statement.close();
             conn.close();
-             return u;
+            return u;
         }
         catch(SQLException e){
             e.printStackTrace();
             return null;
-        }catch(Exception e){
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
             return null;
+        }       
+    }
+    /**
+     * permette l'acquisto di un articolo a un cliente. Se si verifica un errore durante l'acquisto 
+     * il database viene riportato alla situazione iniziale e la transazione fallisce
+     * 
+     * @param id id dell'articolo in vendita
+     * @param Username username dell'utente che richiede la transazione
+     * @return true se la transazione va a buon fine, false altrimenti
+     */   
+    public boolean transazione(int id,String Username){
+        //Controllo che i parametri siano corretti e che il cliente abbi un credito sufficente, in caso contrario annullo l'operazione
+        Utente cliente=getUtenteByUserName(Username);
+        
+        Articolo articolo=FactoryArticoli.getInstance().getArticleById(id);
+        if(articolo==null||cliente==null||!(cliente instanceof UtenteCliente))
+            return false;
+        
+        Utente venditore=getUtenteByUserName(articolo.getVenditore());
+        if(venditore==null||!(venditore instanceof UtenteVenditore)){
+            return false;
         }
         
+        double prezzo=articolo.getPrezzo();
+        if(cliente.getSaldo()<prezzo){
+            return false;
+        }
         
-        
-       /* for(Utente u: listaUtenti){
-            if(u.getUserName().equals(Username)&&u.getPassword().equals(password)){
-                return u;
+        Connection conn=null;
+        try {  
+            conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            
+            conn.setAutoCommit(false);
+            String sql="";
+            PreparedStatement statement;
+            //Controllo la quantita di articoli in vendita.
+            //se e maggiore di uno la riduce altrimenti elimina l'articolo dalla lista
+            if(articolo.getNumero()==1){
+                sql="delete from Articoli where id=?";
+                statement=conn.prepareStatement(sql);
+                statement.setInt(1,id);
+            }else{
+                sql="update Articoli set numero=? where id=?";
+                statement=conn.prepareStatement(sql);
+                statement.setInt(1,articolo.getNumero()-1);
+                statement.setInt(2,id);
             }
+            int updateArticolo=statement.executeUpdate();
+            
+            //riduce il credito del cliente 
+            sql="update Utenti set saldo=? where username=?";
+            statement=conn.prepareStatement(sql);
+            statement.setDouble(1,cliente.getSaldo()-prezzo);
+            statement.setString(2,cliente.getUserName());
+            int updateCliente=statement.executeUpdate();
+            
+            //incrementa il credito del venditore
+            sql="update Utenti set saldo=? where username=?";
+            statement=conn.prepareStatement(sql);
+            statement.setDouble(1,venditore.getSaldo()+prezzo);
+            statement.setString(2,venditore.getUserName());
+            int updateVenditore=statement.executeUpdate();
+              
+            //se una delle query precedenti non restituisce i risultati aspettati, si riporta il database alla condizione iniziale
+            if(updateCliente!=1||updateArticolo!=1||updateVenditore!=1){
+                conn.rollback();
+                return false;
+            }
+            
+            conn.commit();
+            statement.close();
+            conn.close();         
+            return true;
         }
-        return null;
-    */    
+        catch(SQLException e){
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }        
     }
     
     public ArrayList<Utente> getListaUtenti(){
+        String sql="select * from Utenti";
+        ArrayList<Utente> listaUtenti=executeQuery(sql);
         return listaUtenti;
     }
     
     public ArrayList<UtenteVenditore> getVenditori(){
+       String sql="select * from Utenti where tipo='V'";
+       
+        ArrayList<Utente> utenti=executeQuery(sql);
         ArrayList<UtenteVenditore> venditori=new ArrayList<UtenteVenditore>();
-        
-        for(Utente v: listaUtenti){
-            if(v instanceof UtenteVenditore)
-                venditori.add((UtenteVenditore)v);
+        if(utenti!=null){
+            for(Utente u:utenti){
+                venditori.add((UtenteVenditore)u);  
+            } 
         }
-        return venditori;
+        return venditori;      
     }
     
     public ArrayList<UtenteCliente> getClienti(){
+        String sql="select * from Utenti where tipo='C'";
+       
+        ArrayList<Utente> utenti=executeQuery(sql);
         ArrayList<UtenteCliente> clienti=new ArrayList<UtenteCliente>();
-        
-        for(Utente c: listaUtenti){
-            if(c instanceof UtenteCliente)
-                clienti.add((UtenteCliente)c);
+        if(utenti!=null){
+            for(Utente u:utenti){
+                clienti.add((UtenteCliente)u);  
+            } 
         }
-        return clienti;
+        return clienti;      
     }  
 
-    public Utente getUtenteByUserName(String userName){
-        for(Utente u: listaUtenti){
-            if(u.getUserName().equals(userName))
-               return u;
+    public Utente getUtenteByUserName(String Username){
+        Utente u=null;
+        try {
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            
+            String sql="select * from Utenti where username=?";
+            
+            PreparedStatement statement=conn.prepareStatement(sql);
+            statement.setString(1, Username);
+  
+            ResultSet result=statement.executeQuery();
+             if(result.next()){
+                if(result.getString("tipo").equals("C")){
+                    u=new UtenteCliente(result.getString("username"),result.getString("password"),result.getDouble("saldo"));
+                }else{
+                    u=new UtenteVenditore(result.getString("username"),result.getString("password"),result.getDouble("saldo"),result.getInt("feedback"));
+                }
+                 
+                if(result.next()){
+                    return null;
+                }
+            }
+            statement.close();
+            conn.close();
+            return u;  
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public void setConnectionString(String s){
 	this.connectionString = s;
     }
+    
     public String getConnectionString(){
             return this.connectionString;
     } 
     
+    private ArrayList<Utente> executeQuery(String query){
+        if(query==null)
+            return null;
+        try {
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            
+            Statement statement=conn.createStatement();
+            ResultSet result= statement.executeQuery(query);
 
+            ArrayList<Utente> listaUtenti=new ArrayList<Utente>();
+            while(result.next()){
+                if(result.getString("tipo").equals("C")){
+                    listaUtenti.add(new UtenteCliente(result.getString("username"),result.getString("password"),result.getDouble("saldo")));
+                }else{
+                    listaUtenti.add(new UtenteVenditore(result.getString("username"),result.getString("password"),result.getDouble("saldo"),result.getInt("feedback")));
+                }
+            }
+            statement.close();
+            conn.close();
+            return listaUtenti;
 
+        }catch (IllegalArgumentException ex) {
+            return null;      
+        } catch (SQLException ex) {
+           return null;
+        }
+    }
 
+  
 }

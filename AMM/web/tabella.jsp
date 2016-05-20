@@ -22,7 +22,12 @@
             <td>${articolo.getTitolo()}</td>
             <td class="col_pezzi">${articolo.getNumero()}</td>
             <td class="col_prezzi">${articolo.getPrezzo()}</td>
-            <td><a href="cliente.html?id=${articolo.getId()}">Aggiungi al carrello</a></td>
+            <c:if test="${venditore!=true}">
+                <td><a href="cliente.html?id=${articolo.getId()}">Aggiungi al carrello</a></td>
+            </c:if>
+            <c:if test="${venditore==true}">
+                <td><a href="venditore.html?operation=update&id=${articolo.id}">Modifica</a>/<a href="venditore.html?operation=delete&id=${articolo.id}">Cancella</a></td>
+            </c:if>
         </tr>
         <c:choose>
             <c:when test="${classe!='pari'}">

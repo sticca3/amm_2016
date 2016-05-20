@@ -19,7 +19,7 @@
         <div id="content">
             <c:choose>
                <c:when test="${page==null}">
-                   <jsp:include page="tabella_cliente.jsp"/> 
+                   <jsp:include page="tabella.jsp"/> 
                </c:when>
                <c:when test="${page=='acquisto'}">
                    <h3>Dettagli articolo</h3>

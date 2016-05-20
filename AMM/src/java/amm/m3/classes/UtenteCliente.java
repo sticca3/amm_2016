@@ -11,7 +11,7 @@ package amm.m3.classes;
  */
 public class UtenteCliente extends Utente{
     
-    public UtenteCliente(String userName, String password, Conto saldo) throws Exception {
+    public UtenteCliente(String userName, String password, double saldo) throws IllegalArgumentException {
         super(userName, password, saldo);
     }
     
@@ -23,24 +23,6 @@ public class UtenteCliente extends Utente{
      * @return true se l'aquisto va a buon fine, false se si verifica qualche errore o il credito del cliente non è sufficente per procedere all'acquisto
      */
     public boolean CompraArticolo(int id){
-        FactoryArticoli factory=FactoryArticoli.getInstance();
-        Articolo articolo=factory.getArticleById(id);
-        if(articolo!=null){
-            if(!saldo.controllaOperazione(-articolo.getPrezzo())){
-                return false;
-            }
-            try{
-                UtenteVenditore venditore=(UtenteVenditore)FactoryUtenti.getInstance().getUtenteByUserName(articolo.getVenditore());
-                 if(venditore!=null){
-                    if(venditore.vendiArticolo(id)){
-                       saldo.addMoney(-articolo.getPrezzo());
-                       return true;
-                    }
-                 }   
-            }catch(Exception e){
-                return false;
-            }
-        }
-        return false;
+        return FactoryUtenti.getInstance().transazione(id,this.getUserName());
     }
 }

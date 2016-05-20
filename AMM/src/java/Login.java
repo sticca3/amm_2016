@@ -99,6 +99,8 @@ public class Login extends HttpServlet {
            }
         if(utente instanceof UtenteVenditore){
             request.setAttribute("titolo","Area venditore");
+            request.setAttribute("venditore","true");
+            request.setAttribute("articoli",FactoryArticoli.getInstance().getArticlesByVenditore(utente.getUserName()));
             request.getRequestDispatcher("venditore.jsp").forward(request, response);  
         }
         

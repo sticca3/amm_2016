@@ -19,10 +19,10 @@ public class Articolo {
     private String descrizione;
     private int id;
     
-    public Articolo(String titolo,String descrizione,int numero,double prezzo,String path,String venditore,int id)throws Exception{
+    public Articolo(String titolo,String descrizione,int numero,double prezzo,String path,String venditore,int id)throws IllegalArgumentException{
         
-        if(prezzo<=0||numero<0||titolo==null||titolo.equals("")||path==null||venditore==null||FactoryArticoli.getInstance().getArticleById(id)!=null)
-            throw new Exception("Errore nei dati inseriti.");
+        if(prezzo<=0||numero<0||titolo==null||titolo.equals("")||path==null||venditore==null||id<0)
+            throw new IllegalArgumentException("Errore nei dati inseriti.");
         
         
         this.titolo=titolo;
@@ -52,44 +52,44 @@ public class Articolo {
         return titolo;
     }
 
-    public void setTitolo(String titolo)throws Exception {
+    public void setTitolo(String titolo)throws IllegalArgumentException {
         if(titolo!=null)
             this.titolo = titolo;
         else
-            throw new Exception("Errore nei dati inseriti.");
+            throw new IllegalArgumentException("Errore nei dati inseriti.");
     }
 
     public double getPrezzo() {
         return prezzo;
     }
 
-    public void setPrezzo(double prezzo) throws Exception{
+    public void setPrezzo(double prezzo) throws IllegalArgumentException{
         if(prezzo>0)
             this.prezzo = prezzo;
         else
-            throw new Exception("Errore nei dati inseriti.");
+            throw new IllegalArgumentException("Errore nei dati inseriti.");
     }
 
     public int getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) throws Exception{
+    public void setNumero(int numero) throws IllegalArgumentException{
         if(numero>0)
             this.numero = numero;
         else
-            throw new Exception("Errore nei dati inseriti.");
+            throw new IllegalArgumentException("Errore nei dati inseriti.");
     }
 
     public String getImage_path() {
         return image_path;
     }
 
-    public void setImage_path(String image_path) throws Exception{
+    public void setImage_path(String image_path) throws IllegalArgumentException{
         if(image_path!=null)
             this.image_path = image_path;
         else
-            throw new Exception("Errore nei dati inseriti.");
+            throw new IllegalArgumentException("Errore nei dati inseriti.");
     }
 
     public String getDescrizione() {
