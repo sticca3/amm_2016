@@ -12,7 +12,7 @@ Utenti:
 	-password 	String
 	-tipo 		Char ( C->cliente, V->venditore )
 	-saldo 		Double
-
+        -feedback       Double(per i clienti si imposta a null)
 
 Relazioni:
 	Articolo - Venditore relazione Molti a Uno:
