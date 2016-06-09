@@ -18,5 +18,7 @@
     <meta name="description" content="MileStone 1 AMM 2016,Descrizione">
     <meta name="author" content="Ticca Salvatore">
     <link rel="stylesheet" href="style.css" type="text/css" >
+    <script type="text/javascript" src="js/filtro.js"></script>
+    <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
 </head>
 

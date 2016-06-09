@@ -225,6 +225,20 @@ form label{
     font-size:35px;
 }
 
+.filtro{
+    margin:0px;
+    padding:0px;
+}
+
+#filter_box{
+    border-style:solid;
+    border-color:gray;
+    border-width:1px;
+    padding-top:5px;
+    padding-bottom:5px;
+    text-align:center;
+    align-content: center;
+}
 
 @media only screen and (min-width: 1024px){
     th#prezzo{
@@ -336,6 +350,21 @@ form label{
      .dettagli li{
         display:inline-block;
     }
+    
+    label.filtro{
+        width:70px; 
+    }
+
+    input.filtro{
+        width:220px;
+    }
+
+    #filter_box{
+        width:300px;
+        margin:10px;
+        padding-left:5px;
+        padding-right:5px;
+    }
 }
       
 @media only screen and (min-width:480px) and (max-width:1024px){
@@ -442,6 +471,21 @@ form label{
      .dettagli li{
         display:inline-block;
     }
+    label.filtro{
+        width:70px; 
+    }
+
+    input.filtro{
+        width:220px;
+    }
+
+    #filter_box{
+        width:300px;
+        margin:10px;
+        padding-left:5px;
+        padding-right:5px;
+    }
+
 }
 
 @media only screen and (max-width:480px){
@@ -563,6 +607,24 @@ form label{
     }
     .dettagli li{
         display:block;
+    }
+    
+    label.filtro{
+        display:block;
+        width:98%;
+    }
+
+    input.filtro{
+        width:98%;
+    }
+
+    #filter_box{
+        width:100%;
+        margin-left:0px;
+        margin-right:0px;
+        margin:auto;
+        padding-left:2px;
+        padding-right:2px;
     }
 
 }

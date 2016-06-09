@@ -154,7 +154,7 @@ public class Venditore extends HttpServlet {
                     Utente utente=FactoryUtenti.getInstance().getUtenteByUserName(userName);
                     if(utente!=null && utente instanceof UtenteVenditore)
                        return (UtenteVenditore)utente;   
-                }catch(Exception e){
+                }catch(IllegalArgumentException e){
                      return null;
                 } 
             }

@@ -261,6 +261,24 @@ public class FactoryArticoli {
         } 
     }
     
+    public ArrayList<Articolo> getFiltredArticles(String filtro){
+       try {
+            Connection conn=DriverManager.getConnection(connectionString,"sticca","amm2016");
+            String sql="select * from articoli where titolo like ? or descrizione like ?";
+            PreparedStatement statement=conn.prepareStatement(sql);
+            statement.setString(1,'%'+filtro+'%');
+            statement.setString(2,'%'+filtro+'%');
+            ResultSet result= statement.executeQuery();
+            ArrayList<Articolo> out=getListFromResultSet(result);
+            statement.close();
+            conn.close();
+            return out;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        } 
+    }
+    
     public void setConnectionString(String s){
 	this.connectionString = s;
     }

@@ -3,7 +3,7 @@ CREATE TABLE Utenti(
 	password VARCHAR(32) NOT NULL,
 	saldo DOUBLE,
 	tipo CHAR(1) NOT NULL,
-	feedback INTEGER
+	feedback DOUBLE
 );
 
 CREATE TABLE Articoli(

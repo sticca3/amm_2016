@@ -123,7 +123,7 @@ public class Cliente extends HttpServlet {
                     Utente utente=FactoryUtenti.getInstance().getUtenteByUserName(userName);
                     if(utente!=null && utente instanceof UtenteCliente)
                        return (UtenteCliente)utente;   
-                }catch(Exception e){
+                }catch(IllegalArgumentException e){
                      return null;
                 } 
             }

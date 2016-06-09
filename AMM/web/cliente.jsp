@@ -19,7 +19,11 @@
         <div id="content">
             <c:choose>
                <c:when test="${page==null}">
-                   <jsp:include page="tabella.jsp"/> 
+                    <div id="filter_box">
+                       <label for="txt_filter" class="filtro">Filtra:</label>
+                       <input onkeyup="filtra()" type="text" id="txt_filtro" class="filtro">
+                    </div>
+                    <jsp:include page="tabella.jsp"/> 
                </c:when>
                <c:when test="${page=='acquisto'}">
                    <h3>Dettagli articolo</h3>

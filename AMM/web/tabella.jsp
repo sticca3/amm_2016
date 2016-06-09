@@ -5,7 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<table class="content_table">
+<table class="content_table" id="tabella">
     <tr>
         <th id="copertina">Copertina</th>
         <th id="nome">Nome</th>
